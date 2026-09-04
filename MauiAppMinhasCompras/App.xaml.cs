@@ -6,7 +6,7 @@ namespace MauiAppMinhasCompras
     public partial class App : Application
     {
         static SQLiteDatabaseHelper _db;
-        
+
         public static SQLiteDatabaseHelper Db
         {
             get
@@ -24,7 +24,7 @@ namespace MauiAppMinhasCompras
                 return _db;
             }
         }
-        
+
         public App()
         {
             InitializeComponent();
@@ -32,6 +32,6 @@ namespace MauiAppMinhasCompras
             //MainPage = new AppShell();
             MainPage = new NavigationPage(new Views.ListaProduto());
         }
-               
+
     }
 }
