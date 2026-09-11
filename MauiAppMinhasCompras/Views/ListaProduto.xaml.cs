@@ -6,7 +6,6 @@ namespace MauiAppMinhasCompras.Views;
 public partial class ListaProduto : ContentPage
 {
     ObservableCollection<Produto> lista = new ObservableCollection<Produto>();
-    private object lst_produtos;
 
     public ListaProduto()
     {
@@ -59,7 +58,8 @@ public partial class ListaProduto : ContentPage
         catch (Exception ex)
         {
             await DisplayAlert("Ops", ex.Message, "OK");
-        } finally
+        }
+        finally
         {
             lst_produtos.IsRefreshing = false;
         }
@@ -119,6 +119,7 @@ public partial class ListaProduto : ContentPage
         try
         {
             lista.Clear();
+
             List<Produto> tmp = await App.Db.GetAll();
 
             tmp.ForEach(i => lista.Add(i));
@@ -126,9 +127,45 @@ public partial class ListaProduto : ContentPage
         catch (Exception ex)
         {
             await DisplayAlert("Ops", ex.Message, "OK");
-        } finally
+        }
+        finally
         {
             lst_produtos.IsRefreshing = false;
+        }
+    }
+
+    private async void pck_filtro_categoria_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            string categoria = pck_filtro_categoria.SelectedItem as string;
+
+            lista.Clear();
+
+            List<Produto> tmp;
+
+            if (string.IsNullOrEmpty(categoria) || categoria == "Todas")
+                tmp = await App.Db.GetAll();
+            else
+                tmp = await App.Db.GetByCategoria(categoria);
+
+            tmp.ForEach(i => lista.Add(i));
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ops", ex.Message, "OK");
+        }
+    }
+
+    private void ToolbarItem_Relatorio_Clicked(object sender, EventArgs e)
+    {
+        try
+        {
+            Navigation.PushAsync(new Views.RelatorioCategoria());
+        }
+        catch (Exception ex)
+        {
+            DisplayAlert("Ops", ex.Message, "OK");
         }
     }
 }

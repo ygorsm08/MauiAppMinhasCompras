@@ -38,5 +38,10 @@ namespace MauiAppMinhasCompras.Helpers
             string sql = "SELECT * FROM Produto WHERE Descricao LIKE ?";
             return _conn.QueryAsync<Produto>(sql, $"%{q}%");
         }
+
+        public Task<List<Produto>> GetByCategoria(string categoria)
+        {
+            return _conn.Table<Produto>().Where(p => p.Categoria == categoria).ToListAsync();
+        }
     }
 }
